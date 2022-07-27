@@ -78,7 +78,7 @@ class Categories {
         if( isset( $identifier ) && isset($name) && isset($subdepartment_id) ) {
             try {
                 $result = $this->collection->updateOne( 
-                    [ 'identifier'=>$identifier ],
+                    [ 'identifier'=>intval($identifier) ],
                     [ 
                         '$push' => [
                             'categories' => [

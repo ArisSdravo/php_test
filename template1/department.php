@@ -61,5 +61,3 @@ $data = $collection->find()->toArray();
 
     </body>
 </html>
-Footer
-© 2022 GitHub, Inc.
