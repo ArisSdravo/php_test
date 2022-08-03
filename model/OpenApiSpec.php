@@ -45,8 +45,19 @@ use OpenApi\Annotations as OA;
 *     description="Anouncements API",
 * )
 * @OA\Server(
-*     url="http://localhost/",
+*     url="http://coding-factory-test.herokuapp.com/",
 *     description="API server"
+* )
+* @OA\Components(
+*     @OA\SecurityScheme(
+*         securityScheme="bearerAuth",
+*         type="http",
+*         in="header",
+*         scheme="bearer",
+*         bearerFormat="JWT",
+*         name="Authorization",
+*     ),
+*     @OA\Attachable
 * )
 */
 class OpenApiSpec

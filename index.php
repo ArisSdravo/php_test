@@ -3,8 +3,8 @@
 require __DIR__.'/vendor/autoload.php'; // include Composer's autoloader
 
 // Uncomment for localhost running
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+// $dotenv->load();
 
 include 'connect.php';
 
@@ -19,9 +19,16 @@ include 'model/Announcement.php';
 
 include "helper_files/GeneralFunctions.php";
 
+include "jwt_authenticate.php";
+
 $MDB_USER = $_ENV['MDB_USER'];
 $MDB_PASS = $_ENV['MDB_PASS'];
 $ATLAS_CLUSTER_SRV = $_ENV['ATLAS_CLUSTER_SRV'];
+
+$SECRET_KEY = $_ENV['SECRET_KEY'];
+$ISSUER_CLAIM = $_ENV['ISSUER_CLAIM'];
+
+$jwt = new JWTAuthentication($SECRET_KEY, $ISSUER_CLAIM);
 
 $connection = new Connection($MDB_USER, $MDB_PASS, $ATLAS_CLUSTER_SRV);
 $generalFunctions = new GeneralFunctions();
@@ -38,15 +45,26 @@ $announcement = new Announcement($connection);
 // Use this namespace
 use Steampixel\Route;
 
+// JWT Authentication
+use \Firebase\JWT\JWT;
+
 // =====================================//
 //       Add Routes for Department      //
 // =====================================//
 
 Route::add('/department/list', function() {
     global $department;
-    
-    $result = $department->showDepartments(); 
+    global $jwt;
+
+    // $result = $jwt->validateJWT();
+    // print_r($jwt);
+    // $checkvalidation = json_decode($result);
+
+    // if ($checkvalidation) {
+        $result = $department->showDepartments(); 
         return $result;
+    // } else 
+    //     return $result;
 });
 
 Route::add('/department/(.*)/list', function($id) {
@@ -337,6 +355,7 @@ Route::add('/user/(.*)/delete', function($id) {
 
 Route::add('/user/login', function() {
     global $user;
+    global $jwt;
 
     // Get the JSON contents
     $json = file_get_contents('php://input');
@@ -345,7 +364,13 @@ Route::add('/user/login', function() {
         // decode the json data
         $data = json_decode($json);
         $result = $user->loginUser($data);
-        return $result;
+        $token = json_decode($result);
+
+        if ($token->success){
+            $result = $jwt->createJWT($token->username, $token->permission, $token->authorizations);
+            return $result;
+        } else 
+            return $result;
     }
     else {
         error_log("Error in login user");

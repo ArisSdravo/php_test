@@ -148,7 +148,28 @@ class Department {
         $identifier = $data->identifier;
         $name = $data->name;
 
-        if( isset( $identifier ) && isset($name)) {
+        $checked = false;
+
+        $result = $this->collection->findOne([
+            'identifier'=>intval($identifier)
+        ]);
+        if ($result):
+            return $this->generalFunctions->returnValue("This identifier exists", false);
+        else:
+            $checked = true;
+        endif;
+
+        $result = $this->collection->findOne([
+            'name'=>$name
+        ]);
+        if ($result):
+            return $this->generalFunctions->returnValue("This name exists", false);
+        else:
+            $checked = true;
+        endif;
+
+
+        if( isset( $identifier ) && isset($name) && $checked) {
             try {
                 $result = $this->collection->insertOne( [
                     'identifier' => intval($identifier), 
