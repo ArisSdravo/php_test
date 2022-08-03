@@ -45,7 +45,7 @@ use OpenApi\Annotations as OA;
 *     description="Anouncements API",
 * )
 * @OA\Server(
-*     url="http://coding-factory-test.herokuapp.com/",
+*     url="http://aris-coding-factory-test.herokuapp.com/",
 *     description="API server"
 * )
 * @OA\Components(
