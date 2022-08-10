@@ -138,8 +138,8 @@ class Department {
      *             oneOf={
      *                 @OA\Schema(type="boolean")
      *             },
-     *             @OA\Examples(example="False bool", value={"success": false}, summary="A false boolean value."),
-     *             @OA\Examples(example="True bool", value={"success": true}, summary="A true boolean value."),
+     *             @OA\Examples(example="False bool", value={"data":"reason of error", "success": false}, summary="A false boolean value."),
+     *             @OA\Examples(example="True bool", value={"data":"return value","success": true}, summary="A true boolean value."),
      *         )
      *     )
      * )

@@ -3,8 +3,8 @@
 require __DIR__.'/vendor/autoload.php'; // include Composer's autoloader
 
 // Uncomment for localhost running
-// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-// $dotenv->load();
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 include 'connect.php';
 
@@ -116,7 +116,7 @@ Route::add('/department/(.*)/delete', function($id) {
     $result = $department->deleteDepartment($id);
     return $result;
 
-},'delete');
+},'delete');  // delete doesnot work, requires get.
 
 // ========================================//
 //       Add Routes for Subdepartment      //

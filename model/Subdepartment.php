@@ -68,6 +68,36 @@ class Subdepartment {
             return $this->generalFunctions->returnValue("",false); 
     }
 
+    /**
+     * @OA\Post(
+     *     path="/subdepartment/create",
+     *     description="Create a subdepartment",
+     *     operationId="createSubepartment",
+     *     tags={"Subdepartment"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="identifier",type="integer"),
+     *                 @OA\Property(property="name",type="string"),
+     *                 example={"identifier": 4, "name": "Συμβάσεις"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retuns a json object with true or false value to field success",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(type="boolean")
+     *             },
+     *             @OA\Examples(example="False bool", value={"data":"reason of error", "success": false}, summary="A false boolean value."),
+     *             @OA\Examples(example="True bool", value={"data":"return value","success": true}, summary="A true boolean value."),
+     *         )
+     *     )
+     * )
+     */
+
     public function createSubdepartment($data) {
         $identifier = $data->identifier;
         $name = $data->name;
@@ -106,6 +136,46 @@ class Subdepartment {
 
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/subdepartment/(identifier)/{id}/delete",
+     *     description="Delete a subdepartment",
+     *     operationId="deleteSubdepartment",
+     *     tags={"Subdepartment"},
+     *     @OA\Parameter(
+     *         name="identifier",
+     *         in="path",
+     *         description="Department identifier to delete subdepartment",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example="4"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Subdepartment mongo id to delete",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="6250932b62a9e94948207113"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retuns a json object with true or false value to field success",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(type="boolean")
+     *             },
+     *             @OA\Examples(example="False bool", value={"success": false}, summary="A false boolean value."),
+     *             @OA\Examples(example="True bool", value={"success": true}, summary="A true boolean value."),
+     *         )
+     *     )
+     * )
+     */
+
     public function deleteSubdepartment($identifier,$id) {
         if( isset( $identifier ) && isset($id)) {
             try {
@@ -143,6 +213,37 @@ class Subdepartment {
         } else 
             return $this->generalFunctions->returnValue("",false);
     }
+
+    /**
+     * @OA\Patch(
+     *     path="/subdepartment/update",
+     *     description="Update a subdepartment",
+     *     operationId="updateSubdepartment",
+     *     tags={"Subdepartment"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="identifier",type="integer"),
+     *                 @OA\Property(property="_id",type="string"),
+     *                 @OA\Property(property="name",type="string"),
+     *                 example={"identifier": 1, "_id":"6244840de0c3d34f620e5dd6", "name": "Βλάβες"}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retuns a json object with true or false value to field success",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(type="boolean")
+     *             },
+     *             @OA\Examples(example="False bool", value={"success": false}, summary="A false boolean value."),
+     *             @OA\Examples(example="True bool", value={"success": true}, summary="A true boolean value."),
+     *         )
+     *     )
+     * )
+     */
 
     public function updateSubdepartment($data) {
         $identifier = $data->identifier;

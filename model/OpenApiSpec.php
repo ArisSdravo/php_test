@@ -44,8 +44,8 @@ use OpenApi\Annotations as OA;
 *     title="API for App Anouncements",
 *     description="Anouncements API",
 * )
-* @OA\Server(
-*     url="http://aris-coding-factory-test.herokuapp.com/",
+* @OA\Server(    
+*     url="http://localhost/",  
 *     description="API server"
 * )
 * @OA\Components(
@@ -63,5 +63,8 @@ use OpenApi\Annotations as OA;
 class OpenApiSpec
 {
 }
-
+// when in heroku use url="http://aris-coding-factory-test.herokuapp.com/",
 ?>
+
+
+
