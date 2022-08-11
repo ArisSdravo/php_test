@@ -91,9 +91,61 @@ class User {
             return $this->generalFunctions->returnValue("",false); 
     }
 
+    /**
+     * @OA\Post(
+     *     path="/user/create",
+     *     description="Create a user",
+     *     operationId="createUser",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(property="username",type="string"),
+     *                  @OA\Property(property="password",type="string"),
+     *                  @OA\Property(property="user_category",type="object"),                      
+     *                  @OA\Property(property="surname",type="string"),
+     *                  @OA\Property(property="name",type="string"),
+     *                  @OA\Property(property="email",type="string"),
+     *                  @OA\Property(property="send_email",type="boolean"),
+     *                  @OA\Property(property="verified",type="boolean"),
+     *                  @OA\Property(property="roles",type="object"),
+     *                  @OA\Property(property="subscription_list",type="object"),
+     *                  example={
+     *                      "username": "asdravo",
+     *                      "password": "123",
+     *                      "user_category": {
+     *                          "identifier":"10",
+     *                          "name":"Προπτυχιακός"
+     *                      }, 
+     *                      "surname": "sdravo",
+     *                      "name": "aris",
+     *                      "email":"a@g.com",
+     *                      "send_eamil": false,
+     *                      "verified": false,
+     *                      "roles": {},
+     *                      "subscription_list": {},     
+     *                  }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retuns a json object with true or false value to field success",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(type="boolean")
+     *             },
+     *             @OA\Examples(example="False bool", value={"success": false}, summary="A false boolean value."),
+     *             @OA\Examples(example="True bool", value={"success": true}, summary="A true boolean value."),
+     *         )
+     *     )
+     * )
+     */
     public function createUser($data) {
         $username = $data->username;
         $password = $data->password;
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $user_category_identifier = $data->user_category->identifier;
         $user_category_name = $data->user_category->name;
         $name = $data->name;
@@ -105,7 +157,7 @@ class User {
             try {
                 $result = $this->collection->insertOne( [ 
                     'username' => $username,
-                    'password' => $password,
+                    'password' => $hashed_password,
                     'user_category' => [
                         'identifier' => $user_category_identifier,
                         'name' => $user_category_name
@@ -233,7 +285,7 @@ class User {
      *             @OA\Schema(
      *                 @OA\Property(property="username",type="string"),
      *                 @OA\Property(property="password",type="string"),
-     *                example={"username": "akosta", "password": "1234"}
+     *                example={"username": "asdravo1", "password": "12345"}
      *             )
      *         )
      *     ),
@@ -263,7 +315,8 @@ class User {
         if( $findUser && isset( $password )){
             try {
 
-                if ($password==$findUser->password) {
+        // if ($password==$findUser->password) {
+                if (password_verify($password, $findUser->password)) {
                     $data = json_encode(array(
                         "success" => true,
                         "username" => $username,
